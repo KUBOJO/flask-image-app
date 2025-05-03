@@ -7,6 +7,7 @@ app = Flask(__name__)
 UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# Pastikan folder 'uploads' ada
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
@@ -16,12 +17,19 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def deteksi_wajah(input_path, output_path):
+    # Pastikan path ke file haarcascade_frontalface_default.xml benar
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+    
+    if face_cascade.empty():
+        raise Exception("File haarcascade_frontalface_default.xml tidak ditemukan.")
+    
     img = cv2.imread(input_path)
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = face_cascade.detectMultiScale(gray, 1.1, 4)
+    
     for (x, y, w, h) in faces:
         cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+    
     cv2.imwrite(output_path, img)
 
 @app.route('/', methods=['GET', 'POST'])
@@ -69,5 +77,7 @@ def index():
 
     return render_template('index.html', original_path=original_path, processed_path=processed_path)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Jangan jalankan app.run di PythonAnywhere
+# Hapus atau komentari baris ini jika sudah di PythonAnywhere
+# if __name__ == '__main__':
+#     app.run(debug=True)
