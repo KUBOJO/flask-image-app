@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload dan Perbaikan Gambar</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Reset dan Font */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+            color: #333;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        form {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        input[type="file"], select {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin: 5px 10px;
+        }
+
+        button {
+            padding: 12px 25px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .images {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .image-box {
+            width: 100%;
+            max-width: 400px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+
+        .image-box h2 {
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #444;
+        }
+
+        .image-box img {
+            max-width: 100%;
+            border-radius: 6px;
+        }
+
+        @media (max-width: 768px) {
+            .images {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload dan Perbaiki Gambar</h1>
+        <form method="POST" enctype="multipart/form-data">
+            <input type="file" name="image" required>
+            <select name="effect" required>
+                <option value="grayscale">Grayscale</option>
+                <option value="blur">Blur</option>
+                <option value="rotate">Rotate</option>
+                <option value="mirror">Mirror</option>
+                <option value="face_detect">Deteksi Wajah</option>
+            </select>
+            <button type="submit">Upload & Proses</button>
+        </form>
+
+        <div class="images">
+            {% if original_path %}
+            <div class="image-box">
+                <h2>Gambar Asli</h2>
+                <img src="{{ original_path }}" alt="Gambar Asli">
+            </div>
+            {% endif %}
+
+            {% if processed_path %}
+            <div class="image-box">
+                <h2>Gambar Hasil Perbaikan</h2>
+                <img src="{{ processed_path }}" alt="Gambar Perbaikan">
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
